@@ -13,8 +13,22 @@ export class BookRepository extends BaseRepository<IBook> {
   async countWithFilters(filter: any) {
     return this.model.countDocuments(filter);
   }
-  
+
   async findById(id: string): Promise<IBook | null> {
     return this.model.findById(id);
+  }
+
+  async getAverageRating(bookId: string): Promise<number> {
+    const result = await this.model.aggregate([
+      { $match: { bookId: new this.model.db.Types.ObjectId(bookId) } },
+      {
+        $group: {
+          _id: '$bookId',
+          averageRating: { $avg: '$rating' },
+        },
+      },
+    ]);
+
+    return result[0]?.averageRating ?? 0;
   }
 }

@@ -19,4 +19,10 @@ export class BookController {
     if (!book) return res.status(404).json({ message: 'Book not found' });
     res.json(book);
   };
+
+  getById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const data = await this.usecase.getById(id);
+    res.json(data);
+  };
 }

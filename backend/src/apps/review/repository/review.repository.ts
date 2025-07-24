@@ -13,4 +13,8 @@ export class ReviewRepository extends BaseRepository<IReview> {
   async createReview(data: Partial<IReview>) {
     return this.model.create(data);
   }
+  
+  async findOne(filter: Partial<IReview>) {
+    return this.model.findOne(filter);
+  }
 }
