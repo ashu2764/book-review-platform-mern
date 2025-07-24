@@ -4,5 +4,6 @@ export const ROOT_CONSTANTS = {
     ROOT_PATH: '/',
     AUTH: '/api/auth',
     BOOK: '/api/books',
+    REVIEW: '/api/reviews',
   },
 };
