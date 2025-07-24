@@ -10,6 +10,7 @@ const controller = new BookController();
 
 router.post('/', authenticate, createBookValidation, validateRequest, controller.createBook);
 router.get('/', controller.getBooks);
-router.get('/:id', controller.getBookById);
+router.get('/:id/raw', controller.getBookById);
+router.get('/:id', controller.getById);
 
 export default router;

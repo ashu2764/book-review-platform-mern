@@ -21,8 +21,19 @@ export class BookController {
   };
 
   getById = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const data = await this.usecase.getById(id);
-    res.json(data);
+    try {
+      const { id } = req.params;
+      const { book, averageRating, reviews } = await this.usecase.getById(id);
+
+      res.status(200).json({
+        message: 'Book details fetched successfully',
+        book,
+        averageRating,
+        totalReviews: reviews.length,
+        reviews,
+      });
+    } catch (err: any) {
+      res.status(404).json({ message: err.message || 'Something went wrong' });
+    }
   };
 }

@@ -1,5 +1,6 @@
 import { BaseRepository } from "../../../base/base.repository.js";
 import { IBook,BookModel } from '../../../models/book.model.js';
+import mongoose from 'mongoose';
 export class BookRepository extends BaseRepository<IBook> {
   constructor() {
     super(BookModel);
@@ -20,7 +21,7 @@ export class BookRepository extends BaseRepository<IBook> {
 
   async getAverageRating(bookId: string): Promise<number> {
     const result = await this.model.aggregate([
-      { $match: { bookId: new this.model.db.Types.ObjectId(bookId) } },
+      { $match: { bookId: new mongoose.Types.ObjectId(bookId) } },
       {
         $group: {
           _id: '$bookId',
