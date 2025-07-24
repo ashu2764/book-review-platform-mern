@@ -1,4 +1,4 @@
 export interface IBaseType {
-  _id?: string;
+  _id?: any;
   [key: string]: any;
 }

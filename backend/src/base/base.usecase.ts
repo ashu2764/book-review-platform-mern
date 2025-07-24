@@ -1,5 +1,5 @@
-import { IBaseType } from './types/base-types';
-import { BaseRepository } from './base.repository';
+import { IBaseType } from './types/base-types.js';
+import { BaseRepository } from './base.repository.js';
 
 export class BaseUsecase<T extends IBaseType> {
   protected repository: BaseRepository<T>;
