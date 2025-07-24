@@ -23,4 +23,22 @@ export class ReviewUsecase {
   async getReviewsByBook(bookId: string) {
     return this.repo.findByBook(bookId);
   }
+
+  async getReviewsByBookPaginated(
+    bookId: string,
+    page: number,
+    limit: number,
+    sortBy?: string,
+    order?: 'asc' | 'desc'
+  ) {
+    const reviews = await this.repo.findByBookPaginated(bookId, page, limit,sortBy, order);
+    const total = await this.repo.countByBook(bookId);
+    return {
+      reviews,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
 }

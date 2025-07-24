@@ -25,7 +25,12 @@ export class ReviewController {
 
   getByBook = async (req: Request, res: Response) => {
     const { id: bookId } = req.params;
-    const reviews = await this.usecase.getReviewsByBook(bookId);
-    res.json(reviews);
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const sortBy = (req.query.sortBy as string) || 'createdAt';
+    const order = (req.query.order as 'asc' | 'desc') || 'desc';
+
+    const data = await this.usecase.getReviewsByBookPaginated(bookId, page, limit, sortBy, order);
+    res.json(data);
   };
 }

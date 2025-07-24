@@ -7,7 +7,7 @@ import { validateRequest } from '../../../infrastructure/middleware/validateRequ
 const router = Router();
 const controller = new ReviewController();
 
-router.post('/books/:id', authenticate, createReviewValidation, validateRequest, controller.create);
-router.get('/books/:id', controller.getByBook);
+router.post('/books/:id/review', authenticate, createReviewValidation, validateRequest, controller.create);
+router.get('/books/:id/review', controller.getByBook);
 
 export default router;
