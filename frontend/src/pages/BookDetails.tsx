@@ -1,5 +1,3 @@
-// src/pages/BookDetails.tsx
-
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -20,6 +18,8 @@ import { fetchReviewsByBook } from "../services/reviewService";
 import StarIcon from "@mui/icons-material/Star";
 import PersonIcon from "@mui/icons-material/Person";
 import CommentIcon from "@mui/icons-material/Comment";
+import EmailIcon from "@mui/icons-material/Email"; // Added Email icon
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday"; // Added Date icon
 import ReviewForm from "../components/ReviewForm";
 
 const BookDetails = () => {
@@ -64,7 +64,6 @@ const BookDetails = () => {
     setPage(1);
   };
 
-  // 💥 Add review instantly to top
   const handleNewReview = async () => {
     const [bookRes, reviewRes] = await Promise.all([
       fetchBookById(id!),
@@ -149,13 +148,17 @@ const BookDetails = () => {
 
         <Box sx={{ mb: 5 }}>
           <Typography variant="h5" gutterBottom>
-            <PersonIcon /> Author: {book.author}
+            <PersonIcon sx={{ verticalAlign: "middle", mr: 1 }} />
+            Author: {book.author}
           </Typography>
           <Typography variant="h6" gutterBottom>
+            <CommentIcon sx={{ verticalAlign: "middle", mr: 1 }} />
             Genre: {book.genre}
           </Typography>
           <Typography variant="h6" gutterBottom>
-            <StarIcon sx={{ color: "#FFD700", mr: 1 }} />
+            <StarIcon
+              sx={{ color: "#FFD700", verticalAlign: "middle", mr: 1 }}
+            />
             Avg. Rating:{" "}
             {book.averageRating ? book.averageRating.toFixed(1) : "N/A"}
           </Typography>
@@ -199,15 +202,32 @@ const BookDetails = () => {
                     }}
                   >
                     <Typography variant="h6" gutterBottom>
-                      <CommentIcon sx={{ verticalAlign: "middle", mr: 1 }} />
-                      {review.user?.username || "Anonymous"}
+                      <EmailIcon sx={{ verticalAlign: "middle", mr: 1 }} />
+                      {review.user?.email || "Anonymous"}
                     </Typography>
                     <Typography variant="body1" gutterBottom>
+                      <CommentIcon sx={{ verticalAlign: "middle", mr: 1 }} />
                       {review.review_text || review.comment}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Rating: {review.rating}/5 ⭐
+                      <StarIcon
+                        sx={{
+                          verticalAlign: "middle",
+                          mr: 1,
+                          color: "#FFD700",
+                        }}
+                      />
+                      Rating: {review.rating}/5
                     </Typography>
+                    {review.createdAt && (
+                      <Typography variant="body2" color="textSecondary">
+                        <CalendarTodayIcon
+                          sx={{ verticalAlign: "middle", mr: 1 }}
+                        />
+                        Posted:{" "}
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </Typography>
+                    )}
                   </Paper>
                 </Grid>
               ))}
@@ -228,11 +248,23 @@ const BookDetails = () => {
       </Box>
       <style>
         {`
-          @keyframes gradientShift {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
-        `}
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* ✅ prevent vertical scroll */
+    }
+
+    #root {
+      height: 100%;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+  `}
       </style>
     </>
   );

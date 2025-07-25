@@ -11,7 +11,7 @@ import {
   IconButton,
 } from "@mui/material";
 import axios from "axios";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // For back navigation (optional)
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -37,7 +37,7 @@ const Signup = () => {
   };
 
   const handleLoginRedirect = () => {
-    navigate("/login"); // Redirect to login page
+    navigate("/login");
   };
 
   return (
@@ -47,77 +47,77 @@ const Signup = () => {
         sx={{
           height: "100vh",
           width: "100vw",
-          background: "linear-gradient(135deg, #1e3c72, #2a5298, #4a90e2)", // Enhanced gradient
+          background: "linear-gradient(135deg, #1e3c72, #2a5298, #4a90e2)",
           backgroundSize: "400% 400%",
-          animation: "gradientShift 15s ease infinite", // Subtle animation
+          animation: "gradientShift 15s ease infinite",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          position: "relative",
-          overflow: "hidden", // Prevent overflow
+          overflow: "hidden",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          padding: 3,
+          boxSizing: "border-box",
         }}
       >
-        {/* Optional back button */}
         <IconButton
           onClick={() => navigate(-1)}
           sx={{
             position: "absolute",
-            top: 20,
-            left: 20,
+            top: 24,
+            left: 24,
             color: "#fff",
+            fontSize: "2rem",
             "&:hover": { color: "#4a90e2" },
           }}
         >
-          <ArrowBackIcon />
+          <ArrowBackIcon fontSize="large" />
         </IconButton>
 
         <Container maxWidth="sm">
           <Paper
-            elevation={12} // Increased elevation for a more pronounced shadow
+            elevation={12}
             sx={{
-              padding: 6, // Increased padding for a roomier feel
-              minHeight: "520px", // Kept as per original
-              borderRadius: 2, // Slightly reduced radius for a modern look
-              backgroundColor: "rgba(255, 255, 255, 0.95)", // Slight transparency
-              boxShadow: "0px 15px 40px rgba(0, 0, 0, 0.4)", // Deeper shadow
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              backdropFilter: "blur(10px)", // Subtle glassmorphism effect
+              p: 5,
+              borderRadius: 3,
+              backgroundColor: "rgba(255, 255, 255, 0.97)",
+              boxShadow: "0px 12px 30px rgba(0, 0, 0, 0.35)",
+              backdropFilter: "blur(10px)",
+              maxHeight: "calc(100vh - 80px)",
+              overflowY: "auto",
             }}
           >
             <Typography
-              variant="h3" // Larger heading
+              variant="h4"
               align="center"
               gutterBottom
               sx={{
                 color: "#1e3c72",
                 fontWeight: 700,
-                mb: 4,
                 textTransform: "uppercase",
-                letterSpacing: 1.5,
-                fontFamily: "'Roboto', sans-serif",
+                mb: 4,
+                letterSpacing: "0.05em",
               }}
             >
               Create an Account
             </Typography>
-            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+
+            <form onSubmit={handleSubmit}>
               <TextField
                 label="Username"
                 fullWidth
                 margin="normal"
-                variant="outlined" // Outlined for a modern look
+                variant="outlined"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#4a90e2" },
-                    "&:hover fieldset": { borderColor: "#2a5298" },
-                    "&.Mui-focused fieldset": { borderColor: "#1e3c72" },
+                  "& .MuiInputBase-root": {
+                    fontSize: "1.2rem",
+                    height: "56px",
                   },
-                  "& .MuiInputLabel-root": { color: "#1e3c72" },
+                  "& .MuiInputLabel-root": { fontSize: "1.1rem" },
                 }}
               />
               <TextField
@@ -130,12 +130,11 @@ const Signup = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#4a90e2" },
-                    "&:hover fieldset": { borderColor: "#2a5298" },
-                    "&.Mui-focused fieldset": { borderColor: "#1e3c72" },
+                  "& .MuiInputBase-root": {
+                    fontSize: "1.2rem",
+                    height: "56px",
                   },
-                  "& .MuiInputLabel-root": { color: "#1e3c72" },
+                  "& .MuiInputLabel-root": { fontSize: "1.1rem" },
                 }}
               />
               <TextField
@@ -148,19 +147,18 @@ const Signup = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#4a90e2" },
-                    "&:hover fieldset": { borderColor: "#2a5298" },
-                    "&.Mui-focused fieldset": { borderColor: "#1e3c72" },
+                  "& .MuiInputBase-root": {
+                    fontSize: "1.2rem",
+                    height: "56px",
                   },
-                  "& .MuiInputLabel-root": { color: "#1e3c72" },
+                  "& .MuiInputLabel-root": { fontSize: "1.1rem" },
                 }}
               />
               {error && (
                 <Typography
                   color="error"
                   align="center"
-                  sx={{ mt: 2, fontWeight: 500 }}
+                  sx={{ mt: 2, fontSize: "1rem", fontWeight: 500 }}
                 >
                   {error}
                 </Typography>
@@ -169,32 +167,26 @@ const Signup = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
                 sx={{
                   mt: 4,
-                  py: 2, // Increased padding for a larger button
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
+                  py: 1.5,
                   backgroundColor: "#1e3c72",
                   "&:hover": {
                     backgroundColor: "#2a5298",
-                    transform: "scale(1.05)", // Subtle scale on hover
                   },
-                  borderRadius: 1,
-                  textTransform: "uppercase",
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  borderRadius: 2,
                 }}
               >
-                SIGNUP
+                Sign Up
               </Button>
               <Button
                 fullWidth
                 variant="outlined"
-                color="secondary"
                 sx={{
-                  mt: 2,
-                  py: 2, // Increased padding for consistency
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
+                  mt: 3,
+                  py: 1.5,
                   color: "#4a90e2",
                   borderColor: "#4a90e2",
                   "&:hover": {
@@ -202,20 +194,27 @@ const Signup = () => {
                     color: "#2a5298",
                     backgroundColor: "rgba(74, 144, 226, 0.1)",
                   },
-                  borderRadius: 1,
-                  textTransform: "uppercase",
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  borderRadius: 2,
                 }}
                 onClick={handleLoginRedirect}
               >
-                LOGIN
+                Login Instead
               </Button>
             </form>
           </Paper>
         </Container>
       </Box>
-      {/* Animation for gradient */}
+
       <style>
         {`
+          html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+          }
           @keyframes gradientShift {
             0% { background-position: 0% 0%; }
             50% { background-position: 100% 100%; }

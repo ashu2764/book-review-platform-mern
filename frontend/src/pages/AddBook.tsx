@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -10,12 +9,15 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import axios from "axios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const AddBook = () => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [genre, setGenre] = useState("");
+  const [rating, setRating] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -23,19 +25,25 @@ const Login = () => {
     e.preventDefault();
     setError("");
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
-      localStorage.setItem("token", res.data.token);
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        "http://localhost:5000/api/books",
+        {
+          title,
+          author,
+          genre,
+          averageRating: rating ? parseFloat(rating) : undefined,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       navigate("/");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || "Failed to add book");
     }
-  };
-
-  const handleSignUpRedirect = () => {
-    navigate("/signup");
   };
 
   return (
@@ -98,44 +106,76 @@ const Login = () => {
                 letterSpacing: "0.05em",
               }}
             >
-              Login
+              Add New Book
             </Typography>
 
             <form onSubmit={handleSubmit}>
               <TextField
-                label="Email"
-                type="email"
+                label="Title"
                 fullWidth
                 margin="normal"
                 variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 required
                 sx={{
                   "& .MuiInputBase-root": {
-                    fontSize: "1.2rem",
+                    fontSize: "1.1rem",
                     height: "56px",
                   },
-                  "& .MuiInputLabel-root": { fontSize: "1.1rem" },
+                  "& .MuiInputLabel-root": { fontSize: "1.05rem" },
                 }}
               />
               <TextField
-                label="Password"
-                type="password"
+                label="Author"
                 fullWidth
                 margin="normal"
                 variant="outlined"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
                 required
                 sx={{
                   "& .MuiInputBase-root": {
-                    fontSize: "1.2rem",
+                    fontSize: "1.1rem",
                     height: "56px",
                   },
-                  "& .MuiInputLabel-root": { fontSize: "1.1rem" },
+                  "& .MuiInputLabel-root": { fontSize: "1.05rem" },
                 }}
               />
+              <TextField
+                label="Genre"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                value={genre}
+                onChange={(e) => setGenre(e.target.value)}
+                required
+                sx={{
+                  "& .MuiInputBase-root": {
+                    fontSize: "1.1rem",
+                    height: "56px",
+                  },
+                  "& .MuiInputLabel-root": { fontSize: "1.05rem" },
+                }}
+              />
+              <TextField
+                label="Rating (1–5)"
+                type="number"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                inputProps={{ step: "0.1", min: "1", max: "5" }}
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+                sx={{
+                  "& .MuiInputBase-root": {
+                    fontSize: "1.1rem",
+                    height: "56px",
+                  },
+                  "& .MuiInputLabel-root": { fontSize: "1.05rem" },
+                }}
+              />
+
               {error && (
                 <Typography
                   color="error"
@@ -145,6 +185,7 @@ const Login = () => {
                   {error}
                 </Typography>
               )}
+
               <Button
                 type="submit"
                 fullWidth
@@ -153,36 +194,13 @@ const Login = () => {
                   mt: 4,
                   py: 1.5,
                   backgroundColor: "#1e3c72",
-                  "&:hover": {
-                    backgroundColor: "#2a5298",
-                  },
+                  "&:hover": { backgroundColor: "#2a5298" },
                   fontSize: "1.1rem",
                   fontWeight: "bold",
                   borderRadius: 2,
                 }}
               >
-                Login
-              </Button>
-              <Button
-                fullWidth
-                variant="outlined"
-                sx={{
-                  mt: 3,
-                  py: 1.5,
-                  color: "#4a90e2",
-                  borderColor: "#4a90e2",
-                  "&:hover": {
-                    borderColor: "#2a5298",
-                    color: "#2a5298",
-                    backgroundColor: "rgba(74, 144, 226, 0.1)",
-                  },
-                  fontSize: "1.1rem",
-                  fontWeight: "bold",
-                  borderRadius: 2,
-                }}
-                onClick={handleSignUpRedirect}
-              >
-                Sign Up Instead
+                Submit Book
               </Button>
             </form>
           </Paper>
@@ -208,4 +226,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AddBook;
