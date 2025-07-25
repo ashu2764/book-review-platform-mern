@@ -1,5 +1,4 @@
-import { BookRepository } from "../repository/book.repository.js";
-import { ReviewRepository } from "apps/review/repository/review.repository.js";
+import { BookRepository } from '../repository/book.repository.js';
 import { IBook } from '../../../models/book.model.js';
 
 interface CreateBookDTO {
@@ -9,10 +8,7 @@ interface CreateBookDTO {
 }
 
 export class BookUsecase {
-  constructor(
-    private repo = new BookRepository(),
-    private reviewRepo = new ReviewRepository()
-  ) {}
+  constructor(private repo = new BookRepository()) {}
 
   async createBook(data: CreateBookDTO): Promise<IBook> {
     return this.repo.create(data);
@@ -40,9 +36,7 @@ export class BookUsecase {
 
   async getById(bookId: string) {
     const book = await this.repo.findById(bookId);
-    // 💡 Make sure this method exists in ReviewRepository
-    const reviews = await this.reviewRepo.findByBook(bookId);
-
+    const reviews = await this.repo.findAllReviews(bookId);
     const avgRating = await this.repo.getAverageRating(bookId);
 
     return {
@@ -50,5 +44,19 @@ export class BookUsecase {
       averageRating: avgRating,
       reviews,
     };
+  }
+
+  createReview(bookId: string, review: any) {
+    return this.repo.addReview(bookId, review);
+  }
+
+  getPaginatedReviews(
+    bookId: string,
+    page: number,
+    limit: number,
+    sortBy: string,
+    order: 'asc' | 'desc'
+  ) {
+    return this.repo.getReviewsPaginated(bookId, page, limit, sortBy, order);
   }
 }
