@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Home from "../pages/Home";
+import BookDetails from "../pages/BookDetails";
 import PrivateRoute from "../components/PrivateRoute";
 
 const AppRoutes = () => {
@@ -15,6 +16,14 @@ const AppRoutes = () => {
           element={
             <PrivateRoute>
               <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/books/:id"
+          element={
+            <PrivateRoute>
+              <BookDetails />
             </PrivateRoute>
           }
         />

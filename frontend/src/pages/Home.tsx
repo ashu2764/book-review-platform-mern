@@ -17,6 +17,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import CategoryIcon from "@mui/icons-material/Category";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom"; // <-- Import navigate
 
 const Home = () => {
   const [books, setBooks] = useState<any[]>([]);
@@ -25,6 +26,7 @@ const Home = () => {
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate(); // <-- Initialize navigate
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -54,19 +56,19 @@ const Home = () => {
         sx={{
           minHeight: "100vh",
           width: "100vw",
-          background: "linear-gradient(135deg, #1e3c72, #2a5298, #4a90e2)", // Enhanced gradient
+          background: "linear-gradient(135deg, #1e3c72, #2a5298, #4a90e2)",
           backgroundSize: "400% 400%",
-          animation: "gradientShift 15s ease infinite", // Subtle animation
+          animation: "gradientShift 15s ease infinite",
           py: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "flex-start", // Adjusted to start from top due to fixed header
-          overflowX: "hidden", // Disable horizontal scrolling
-          position: "relative", // Ensure proper positioning context for fixed header
+          justifyContent: "flex-start",
+          overflowX: "hidden",
+          position: "relative",
         }}
       >
-        <Container maxWidth="lg" sx={{ width: "100%", height: "100%" }}>
+        <Container maxWidth="lg">
           <Typography
             variant="h2"
             align="center"
@@ -75,36 +77,30 @@ const Home = () => {
               color: "#fff",
               fontWeight: 700,
               mb: 8,
-              textShadow: "1px 1px 6px rgba(0, 0, 0, 0.4)", // Deeper shadow
+              textShadow: "1px 1px 6px rgba(0, 0, 0, 0.4)",
               position: "fixed",
               top: 0,
               left: 0,
               width: "100%",
-              background: "linear-gradient(135deg, #1e3c72, #2a5298, #4a90e2)", // Match background
+              background: "linear-gradient(135deg, #1e3c72, #2a5298, #4a90e2)",
               zIndex: 1000,
-              padding: "25px 0", // Slightly increased padding
-              textTransform: "uppercase", // Modern typography
-              letterSpacing: 2, // Added spacing
-              fontFamily: "'Roboto', sans-serif", // Consistent font
+              padding: "25px 0",
+              textTransform: "uppercase",
+              letterSpacing: 2,
+              fontFamily: "'Roboto', sans-serif",
             }}
           >
             📚 Available Books
           </Typography>
 
-          {/* Offset content to avoid overlap with fixed header */}
           <Box sx={{ mt: "120px" }}>
-            {" "}
-            {/* Adjusted based on increased header height */}
             {isLoading ? (
               <Box sx={{ display: "flex", justifyContent: "center", my: 8 }}>
-                <CircularProgress
-                  color="inherit"
-                  size={60} // Larger loading spinner
-                />
+                <CircularProgress color="inherit" size={60} />
               </Box>
             ) : error ? (
               <Typography
-                variant="h5" // Slightly larger error text
+                variant="h5"
                 color="error"
                 align="center"
                 mb={8}
@@ -114,7 +110,7 @@ const Home = () => {
               </Typography>
             ) : books.length === 0 ? (
               <Typography
-                variant="h5" // Slightly larger no-books text
+                variant="h5"
                 align="center"
                 color="text.secondary"
                 mb={8}
@@ -125,22 +121,24 @@ const Home = () => {
             ) : (
               <Grid
                 container
-                spacing={isMobile ? 3 : 5} // Increased spacing for better layout
+                spacing={isMobile ? 3 : 5}
                 justifyContent="center"
               >
                 {books.map((book) => (
                   <Grid item xs={12} sm={6} md={4} key={book._id}>
                     <Card
+                      onClick={() => navigate(`/books/${book._id}`)} // <-- navigate on click
                       sx={{
                         height: "100%",
-                        borderRadius: 2, // Slightly reduced radius
-                        backgroundColor: "rgba(255, 255, 255, 0.95)", // Glassmorphism effect
-                        boxShadow: "0px 12px 40px rgba(0, 0, 0, 0.3)", // Deeper shadow
+                        cursor: "pointer", // <-- Add cursor
+                        borderRadius: 2,
+                        backgroundColor: "rgba(255, 255, 255, 0.95)",
+                        boxShadow: "0px 12px 40px rgba(0, 0, 0, 0.3)",
                         transition: "transform 0.3s ease, scale 0.3s ease",
                         "&:hover": {
-                          transform: "translateY(-8px) scale(1.08)", // Enhanced hover effect
+                          transform: "translateY(-8px) scale(1.08)",
                         },
-                        backdropFilter: "blur(8px)", // Glassmorphism
+                        backdropFilter: "blur(8px)",
                       }}
                     >
                       <CardContent sx={{ px: 6, py: 5, textAlign: "center" }}>
@@ -154,17 +152,15 @@ const Home = () => {
                             alignItems: "center",
                             justifyContent: "center",
                             gap: 3,
-                            fontSize: { xs: "1.6rem", md: "2.2rem" }, // Slightly larger
-                            textTransform: "capitalize", // Better readability
+                            fontSize: { xs: "1.6rem", md: "2.2rem" },
+                            textTransform: "capitalize",
                           }}
                         >
                           <BookIcon sx={{ fontSize: 45, color: "#FF6F61" }} />
                           {book.title || "Untitled"}
                         </Typography>
 
-                        <Divider
-                          sx={{ mb: 5, borderColor: "#4a90e2" }} // Colored divider
-                        />
+                        <Divider sx={{ mb: 5, borderColor: "#4a90e2" }} />
 
                         <Box
                           sx={{
@@ -234,6 +230,7 @@ const Home = () => {
           </Box>
         </Container>
       </Box>
+
       {/* Animation for gradient */}
       <style>
         {`
@@ -241,7 +238,6 @@ const Home = () => {
             0% { background-position: 0% 0%; }
             50% { background-position: 100% 100%; }
             100% { background-position: 0% 0%; }
-          }
         `}
       </style>
     </>
